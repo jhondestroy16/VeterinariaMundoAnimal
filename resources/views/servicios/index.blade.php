@@ -29,21 +29,23 @@
                         <td>$ {{ number_format($servicio->valor, 2, ',', '.') }}</td>
                         <td>
                             <a href="{{ route('servicios.show', $servicio->id) }}" class="btn btn-info">Detalles</a>
-                            <a href="{{ route('servicios.edit', $servicio->id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ route('servicios.destroy', $servicio->id) }}" method="post"
-                                class="d-inline-flex">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('¿Confirma la eliminacion del servicio de {{ $servicio->nombre }}?')">Eliminar</button>
-                            </form>
+                            @can('servicios')
+                                <a href="{{ route('servicios.edit', $servicio->id) }}" class="btn btn-warning">Editar</a>
+                                <form action="{{ route('servicios.destroy', $servicio->id) }}" method="post"
+                                    class="d-inline-flex">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('¿Confirma la eliminacion del servicio de {{ $servicio->nombre }}?')">Eliminar</button>
+                                </form>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @else
-    <p class="texto-blanco">No hay servicios registrados</p>
+        <p class="texto-blanco">No hay servicios registrados</p>
     @endif
 
 @endsection

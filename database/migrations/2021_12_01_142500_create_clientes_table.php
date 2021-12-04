@@ -22,7 +22,6 @@ class CreateClientesTable extends Migration
             $table->string('direccion');
             $table->string('contrasenia');
             $table->string('telefono');
-            // $table->boolean('tipo_usuario')->default(0);
             $table->timestamps();
         });
     }

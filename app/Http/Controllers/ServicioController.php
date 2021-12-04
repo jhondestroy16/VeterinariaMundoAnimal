@@ -10,11 +10,13 @@ use Illuminate\Http\Request;
 
 class ServicioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:servicios')->only('create','edit');
+        $this->middleware('auth');
+    }
+
+
     public function index()
     {
         //
@@ -59,7 +61,7 @@ class ServicioController extends Controller
             DB::table('servicios')
                 ->where('id', $id)
                 ->update(['turno' => 1]);
-        }else{
+        } else {
             DB::table('servicios')
                 ->where('id', $id)
                 ->update(['turno' => 2]);
