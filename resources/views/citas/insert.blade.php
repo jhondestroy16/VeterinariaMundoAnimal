@@ -50,11 +50,13 @@
                                 @if ($cantidadServicios > 0)
                                     @foreach ($servicios as $servicio)
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" value="{{ $servicio->id }}" id="flexCheckDefault" name="servicios[]">
+                                            <input class="form-check-input" type="checkbox" value="{{ $servicio->id }}"
+                                                id="flexCheckDefault" name="servicios[]">
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                {{ $servicio->nombre }}
+                                                {{ $servicio->nombre }} -
+                                                {{ number_format($servicio->valor, 2, ',', '.') }}
                                             </label>
-                                          </div>
+                                        </div>
                                     @endforeach
                                 @else
                                     <p>No hay servicios disponibles.</p>

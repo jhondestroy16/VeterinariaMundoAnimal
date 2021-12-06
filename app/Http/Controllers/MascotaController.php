@@ -2,47 +2,38 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Mascota;
 use App\Models\Cita;
 use App\Models\Cliente;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MascotaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:mascotas');
+    }
+
     public function index()
     {
-        $mascotas = Mascota::orderBy('nombre', 'asc')->get();
-        $citas = Cita::orderBy('id', 'asc')->get();
+        $id = Auth::id();
+        $mascotas = Mascota::all()
+            ->where('clienteId', '=', $id);
+
         $cantidad = DB::table('mascotas')
             ->select()->count('*');
-        return view('mascotas.index', compact('mascotas', 'citas', 'cantidad'));
+        return view('mascotas.index', compact('mascotas', 'cantidad'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
-        $clientes = Cliente::orderBy('nombre', 'asc')->get();
-
-        return view('mascotas.insert', compact('clientes'));
+        return view('mascotas.insert');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //Se requieren todos los datos, ninguno puede ser nulo.
@@ -51,53 +42,37 @@ class MascotaController extends Controller
             'especie' => ['required'],
             'raza' => ['required'],
             'selectorEdad' => ['required'],
-            'edad' => ['required'],
-            'clienteId' => ['required']
+            'edad' => ['required']
         ]);
-        Mascota::create($request->all());
+
+        $mascota = Mascota::create($request->all());
+        $id = $mascota->id;
+        $idUser = Auth::id();
+
+        DB::table('mascotas')
+            ->where('id', $id)
+            ->update(['clienteId' => $idUser]);
+
         return redirect()->route('mascotas.index')->with('exito', 'Se ha agregado la mascota exitosamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Mascota  $mascota
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $cliente = Cliente::join('mascotas', 'mascotas.clienteId', '=', 'clientes.id')
-            ->select('mascotas.*', 'clientes.*')
+        $cliente = Mascota::join('users', 'mascotas.clienteId', '=', 'users.id')
+            ->select('mascotas.*', 'users.*')
             ->where('mascotas.id', '=', $id)
             ->first();
-        $mascota = Mascota::join('clientes', 'mascotas.clienteId', '=', 'clientes.id')
-            ->select('mascotas.*', 'clientes.nombre as nombreResponsable', 'clientes.apellido')
-            ->where('mascotas.id', '=', $id)
-            ->first();
-        return view('mascotas.view', compact('mascota', 'cliente'));
+
+        return view('mascotas.view', compact('cliente'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Mascota  $mascota
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
-        $clientes = Cliente::orderBy('nombre', 'asc')->get();
+        $clientes = User::orderBy('name', 'asc')->get();
         $mascota = Mascota::FindOrFail($id);
         return view('mascotas.edit', compact('clientes', 'mascota'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Mascota  $mascota
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
@@ -107,7 +82,6 @@ class MascotaController extends Controller
             'raza' => 'required',
             'selectorEdad' => 'required',
             'edad' => 'required'
-            // 'clienteId'=> 'required'
         ]);
 
         $mascota = Mascota::findOrFail($id);
@@ -115,15 +89,8 @@ class MascotaController extends Controller
         return redirect()->route('mascotas.index')->with('exito', 'Se ha modificado los datos de la mascota exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Mascota  $mascota
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
         $mascota = Mascota::findOrFail($id);
         $mascota->delete();
 

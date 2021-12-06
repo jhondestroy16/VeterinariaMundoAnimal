@@ -12,8 +12,7 @@ class ServicioController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:servicios')->only('create','edit');
-        $this->middleware('auth');
+        $this->middleware('can:servicios');
     }
 
 

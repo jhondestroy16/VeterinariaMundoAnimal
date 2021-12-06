@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Cita;
 use App\Models\CitaServicio;
 use App\Models\Mascota;
+use App\Models\Horario;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 
 class CitaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:citas');
+    }
+
     public function index()
     {
         $citas = Cita::orderBy('fechaCita', 'asc')
@@ -35,7 +37,9 @@ class CitaController extends Controller
      */
     public function create()
     {
-        $mascotas = Mascota::orderBy('nombre', 'asc')->get();
+        $id = Auth::id();
+        $mascotas = Mascota::all()
+            ->where('clienteId', '=', $id);
 
         $cantidad = DB::table('horarios')
             ->select()->count('*');
@@ -72,26 +76,9 @@ class CitaController extends Controller
         $cita = Cita::create($request->all());
 
         $id = $cita->id;
-        $fecha = $cita->fechaCita;
-        $hora = $cita->horaCita;
+        $fecha = $cita->fechaCita; //No
+        $hora = $cita->horaCita; //No
 
-        $turnos = DB::table('horarios')
-        ->select('turno')
-        ->where('id','=',$id)
-        ->get();
-
-        foreach ($turnos as $turno) {
-            echo $turno->turno;
-        }
-
-        DB::table('horarios')
-            ->where('fecha', $fecha)
-            ->where('hora', $hora)
-            ->update(['cita_id' => $id]);
-
-        DB::table('horarios')
-            ->where('cita_id', $id)
-            ->update(['disponibilidad' => 'no']);
         $servicios = $request->servicios;
 
         foreach ($servicios as $servicio) {
@@ -100,6 +87,53 @@ class CitaController extends Controller
             $citaServicio->servicio_id = $servicio;
             $citaServicio->save();
         }
+
+        DB::table('horarios')
+            ->where('fecha', $fecha)
+            ->where('hora', $hora)
+            ->update(['cita_id' => $id]);
+
+        $duraciones = CitaServicio::join('servicios', 'cita_servicios.servicio_id', '=', 'servicios.id')
+            ->select('servicios.*', 'cita_servicios.*')
+            ->where('cita_servicios.cita_id', '=', $id)
+            ->get();
+        $horaInicio = Horario::join('citas', 'horarios.cita_id', '=', 'citas.id')
+            ->select('citas.id', 'horarios.turno')
+            ->where('citas.id', '=', $id)
+            ->first();
+
+        $turnoInicial = $horaInicio->turno;
+
+        $total = 0;
+        $totalValor = 0;
+        foreach ($duraciones as $duracion) {
+            $total = ($duracion->turno  + $total);
+            $totalValor += $duracion->valor;
+        }
+        $total += $turnoInicial;
+
+        $horaFin = Horario::select('hora', 'turno')
+            ->where('turno', '=', $total)
+            ->first();
+        $horaFinal = $horaFin->hora;
+        DB::table('citas')
+            ->where('fechaCita', $fecha)
+            ->where('horaCita', $hora)
+            ->update(['horaCitaFin' => $horaFinal]);
+
+        DB::table('citas')
+            ->where('id', $id)
+            ->update(['valorTotal' => $totalValor]);
+
+        DB::table('horarios')
+            ->where('fecha', $fecha)
+            ->where('hora', '>=', $hora)
+            ->where('hora', '<=', $horaFinal)
+            ->update(['cita_id' => $id]);
+
+        DB::table('horarios')
+            ->where('cita_id', $id)
+            ->update(['disponibilidad' => 'no']);
 
         return redirect()->route('citas.index')->with('exito', 'Se ha solicitado la cita exitosamente.');
     }
@@ -113,8 +147,8 @@ class CitaController extends Controller
     public function show($id)
     {
         $mascota = Cita::join('mascotas', 'citas.mascotaId', '=', 'mascotas.id')
-            ->join('clientes', 'mascotas.clienteId', '=', 'clientes.id')
-            ->select('mascotas.*', 'citas.id as idCita', 'citas.fechaCita', 'citas.horaCita', 'citas.descripcion', 'citas.mascotaId', 'clientes.nombre as nombreResponsable', 'clientes.apellido', 'clientes.telefono', 'clientes.email', 'clientes.direccion')
+            ->join('users', 'mascotas.clienteId', '=', 'users.id')
+            ->select('mascotas.*', 'citas.id as idCita', 'citas.fechaCita', 'citas.horaCita', 'citas.horaCitaFin', 'citas.valorTotal', 'citas.descripcion', 'citas.mascotaId', 'users.*')
             ->where('citas.id', '=', $id)
             ->first();
 

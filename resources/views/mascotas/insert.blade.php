@@ -28,8 +28,8 @@
                             <label for="nombre" class="form-label texto my-2">
                                 <h4 class="texto">Nombre</h4>
                             </label>
-                            <input type="text" name="nombre" id="nombre" placeholder="Nombre de la mascota" class="form-control"
-                                value="{{ old('nombre') }}">
+                            <input type="text" name="nombre" id="nombre" placeholder="Nombre de la mascota"
+                                class="form-control" value="{{ old('nombre') }}">
                         </div>
                     </div>
                 </div>
@@ -39,8 +39,9 @@
                             <label for="especie" class="form-label texto my-2">
                                 <h4 class="texto">Especie</h4>
                             </label>
-                            <input type="text" name="especie" id="especie" placeholder="Especie de la mascota Ej. perro, gato"
-                                class="form-control" value="{{ old('especie') }}">
+                            <input type="text" name="especie" id="especie"
+                                placeholder="Especie de la mascota Ej. perro, gato" class="form-control"
+                                value="{{ old('especie') }}">
                         </div>
                     </div>
                 </div>
@@ -75,26 +76,8 @@
                             <label for="edad" class="form-label texto my-2">
                                 <h4 class="texto">Edad</h4>
                             </label>
-                            <input type="number" name="edad" id="edad" placeholder="Edad de la mascota" class="form-control"
-                                value="{{ old('edad') }}">
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="mb-2">
-                        <div class="mb-2">
-                            <label for="clienteId" class="form-label texto my-2">
-                                <h4 class="texto">Dueño</h4>
-                            </label>
-                            <select name="clienteId" class="form-control" id="clienteId">
-                                <option selected disabled value="">Seleccione...</option>
-                                @foreach ($clientes as $cliente)
-                                    <option value="{{ $cliente->id }}" @if (old('clienteId') == $cliente->id) selected
-                                @endif>
-                                {{ $cliente->nombre }}
-                                </option>
-                                @endforeach
-                            </select>
+                            <input type="number" name="edad" id="edad" placeholder="Edad de la mascota"
+                                class="form-control" value="{{ old('edad') }}">
                         </div>
                     </div>
                 </div>

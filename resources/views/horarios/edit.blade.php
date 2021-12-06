@@ -43,6 +43,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="col">
+                    <div class="mb-2">
+                        <div class="mb-2">
+                            <label for="disṕonibilidad" class="form-label texto my-2">
+                                <h4 class="texto">Disponibilidad</h4>
+                            </label>
+                            <select name="disṕonibilidad" class="form-control">
+                                <option selected disabled value="">Seleccione...</option>
+                                <option value="si">Si</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div>

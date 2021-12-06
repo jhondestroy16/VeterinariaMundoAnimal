@@ -16,13 +16,17 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin',
-            'email' => 'jsvalenciag@ut.edu.co',
+            'email' => 'admin@gmail.com',
+            'telefono' => '3175331444',
+            'direccion' => 'Ambala',
             'password' => bcrypt('12345678')
         ])->assignRole('Admin');
 
         User::create([
             'name' => 'Usuario',
-            'email' => 'jsvalencia32@misena.edu.co',
+            'email' => 'user@gmail.com',
+            'telefono' => '3175331444',
+            'direccion' => 'Ambala',
             'password' => bcrypt('12345678')
         ])->assignRole('Usuario');
     }

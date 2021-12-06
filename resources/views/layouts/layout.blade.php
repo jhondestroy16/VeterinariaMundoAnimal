@@ -23,9 +23,48 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    @can('clientes')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{ route('clientes.create') }}" id="dropCitas"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Clientes
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="{{ route('clientes.index') }}">Listar</a></li>
+                                <li><a class="dropdown-item" href="{{ route('clientes.create') }}">Registrar cliente</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('servicios')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{ route('servicios.create') }}" id="dropServicios"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Servicios
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="{{ route('servicios.index') }}">Listar</a></li>
+                                <li><a class="dropdown-item" href="{{ route('servicios.create') }}">Registrar
+                                        servicios</a></li>
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('horarios')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{ route('horarios.create') }}" id="dropServicios"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Horarios
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="{{ route('horarios.index') }}">Listar</a></li>
+                                <li><a class="dropdown-item" href="{{ route('horarios.create') }}">Registrar horario</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{{ route('mascotas.create') }}" id="dropMascotas" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="{{ route('mascotas.create') }}" id="dropMascotas"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Mascotas
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -34,29 +73,8 @@
                             </li>
                         </ul>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{{ route('clientes.create') }}" id="dropCitas" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Clientes
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="{{ route('clientes.index') }}">Listar</a></li>
-                            <li><a class="dropdown-item" href="{{ route('clientes.create') }}">Registrar cliente</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{{ route('servicios.create') }}" id="dropServicios" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Servicios
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="{{ route('servicios.index') }}">Listar</a></li>
-                            <li><a class="dropdown-item" href="{{ route('servicios.create') }}">Registrar servicios</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{{ route('citas.create') }}" id="dropServicios" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="{{ route('citas.create') }}" id="dropServicios"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Citas
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -64,17 +82,40 @@
                             <li><a class="dropdown-item" href="{{ route('citas.create') }}">Solicitar cita</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{{ route('horarios.create') }}" id="dropServicios" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Horarios
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="{{ route('horarios.index') }}">Listar</a></li>
-                            <li><a class="dropdown-item" href="{{ route('horarios.create') }}">Registrar horario</a>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <!-- Authentication Links -->
+                    @guest
+                        @if (Route::has('login'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                        </ul>
-                    </li>
+                        @endif
+
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                        @endif
+                    @else
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                    @endguest
                 </ul>
             </div>
         </div>

@@ -24,14 +24,11 @@
                                                 <b>Nombre: </b> {{ $mascota->nombre }} <br>
                                                 <b>Especie: </b> {{ $mascota->especie }} <br>
                                                 <b>Raza: </b> {{ $mascota->raza }} <br>
-                                                <b>Edad: </b> {{ $mascota->edad }} {{ $mascota->selectorEdad }} <br>
-                                                <b>Fecha cita: </b> {{ $mascota->fechaCita }} <br>
-                                                <b>Hora cita: </b> {{ $mascota->horaCita }} <br><br>
+                                                <b>Edad: </b> {{ $mascota->edad }} {{ $mascota->selectorEdad }} <br><br>
                                                 <h5 class="texto">Datos del responsable</h5>
-                                                <b>Nombre:</b> {{ $mascota->nombreResponsable }}
-                                                {{ $mascota->apellido }}<br>
-                                                <b>Telefono:</b> {{ $mascota->telefono }} <br>
+                                                <b>Nombre:</b> {{ $mascota->name }}<br>
                                                 <b>Email:</b> {{ $mascota->email }}<br>
+                                                <b>Telefono:</b> {{ $mascota->telefono }}<br>
                                                 <b>Direccion:</b> {{ $mascota->direccion }}<br>
                                             </ul>
                                         </div>
@@ -67,6 +64,11 @@
                                                         </td>
                                                     </tr>
                                                 @endforeach
+                                                <b>Fecha cita: </b> {{ $mascota->fechaCita }} <br>
+                                                <b>Hora cita: </b> {{ $mascota->horaCita }} <br>
+                                                <b>Hora cita fin: </b> {{ $mascota->horaCitaFin }} <br>
+                                                <b>Valor de la cita: </b> $
+                                                {{ number_format($mascota->valorTotal, 2, ',', '.') }} <br><br>
                                             </p>
                                         </div>
                                         </p>
@@ -74,11 +76,11 @@
                                 </div>
                             </div>
                             <!--end card user 2-->
-                            <div class="card-footer">
-                                <div class="button-container">
-                                    <a href="{{ route('citas.index') }}" class="btn btn-primary mt-3">Volver</a>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="button-container">
+                            <a href="{{ route('citas.index') }}" class="btn btn-primary mt-3">Volver</a>
                         </div>
                     </div>
                 </div>

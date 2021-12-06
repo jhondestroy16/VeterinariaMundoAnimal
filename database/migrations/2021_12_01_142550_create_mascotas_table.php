@@ -22,7 +22,8 @@ class CreateMascotasTable extends Migration
             $table->string('edad');
             //Llaves foraneas
             $table->foreignId('clienteId')
-                ->constrained('clientes')
+                ->nullable()
+                ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->timestamps();
