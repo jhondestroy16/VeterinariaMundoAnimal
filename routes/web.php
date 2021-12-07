@@ -14,7 +14,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('inicio');
 
-Route::resource('clientes', ClienteController::class);
+// Route::resource('clientes', ClienteController::class);
 Route::resource('mascotas', MascotaController::class);
 Route::resource('servicios', ServicioController::class);
 Route::resource('citas', CitaController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
