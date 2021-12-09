@@ -81,6 +81,9 @@
         <main class="py-4">
             @yield('content')
         </main>
+        <footer class="card-footer text-muted texto-blanco footer">
+            Desarrollado por <span class="fw-bold">Jhon Steven Valencia Guzmán</span> &copy; 2021
+        </footer>
     </div>
 </body>
 </html>

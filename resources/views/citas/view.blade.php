@@ -69,6 +69,7 @@
                                                 <b>Hora cita fin: </b> {{ $mascota->horaCitaFin }} <br>
                                                 <b>Valor de la cita: </b> $
                                                 {{ number_format($mascota->valorTotal, 2, ',', '.') }} <br><br>
+                                                <b>Nota:</b> El valor total puede cambiar porque algunos medicamentos no vienen incluidos en el servicio.
                                             </p>
                                         </div>
                                         </p>

@@ -20,6 +20,7 @@ class CreateCitasTable extends Migration
             $table->time('horaCitaFin')->nullable(); //22112021
             $table->string('descripcion');
             $table->integer('valorTotal')->nullable();
+            $table->string('estado')->default('Sin definir');
             $table->foreignId('mascotaId')
                 ->nullable()
                 ->constrained('mascotas')

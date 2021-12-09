@@ -165,7 +165,7 @@ class CitaController extends Controller
      * @param  \App\Models\Cita  $cita
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cita $cita)
+    public function edit($id)
     {
         //
     }

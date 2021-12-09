@@ -47,6 +47,8 @@
                                                 <p class="description">
                                                     <b>Nombre: </b> {{ $cliente->name }} <br>
                                                     <b>Email: </b> {{ $cliente->email }} <br>
+                                                    <b>Telefono: </b> {{ $cliente->telefono }} <br>
+                                                    <b>Direccion: </b> {{ $cliente->direccion }} <br>
                                                 </p>
                                             </div>
                                             </p>
