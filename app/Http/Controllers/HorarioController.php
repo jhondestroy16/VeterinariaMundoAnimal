@@ -13,9 +13,13 @@ class HorarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('can:horarios');
+    }
     public function index()
     {
-        $horarios = Horario::orderBy('fecha', 'asc')
+        $horarios = Horario::orderBy('turno', 'asc')
             ->get();
         $cantidad = DB::table('horarios')
             ->select()->count('*');
