@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <h1 class="texto-blanco pt-5 pb-3">Editar datos de la mascota <b>{{ $mascota->nombre }}</b></h1>
+    <h2 class="texto-blanco pt-5 pb-3">Editar datos de la mascota <b>{{ $mascota->nombre }}</b></h2>
     @if ($errors->any())
         <div class="alert alert-danger">
             <div class="header">

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('titulo')</title>
 </head>
@@ -23,19 +24,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    @can('clientes')
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="{{ route('clientes.create') }}" id="dropCitas"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Clientes
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="{{ route('clientes.index') }}">Listar</a></li>
-                                <li><a class="dropdown-item" href="{{ route('clientes.create') }}">Registrar cliente</a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endcan
                     @can('servicios')
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="{{ route('servicios.create') }}" id="dropServicios"
@@ -106,7 +94,7 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                                         document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
 

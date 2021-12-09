@@ -3,7 +3,7 @@
 @section('titulo', 'Solicitar cita')
 
 @section('content')
-    <h1 class="texto-blanco pt-5 pb-3">Solicitar cita</h1>
+    <h2 class="texto-blanco pt-5 pb-3">Solicitar cita</h2>
     @if ($errors->any())
 
         <div class="alert alert-danger">

@@ -3,7 +3,7 @@
 @section('titulo', 'Servicios')
 
 @section('content')
-    <h1 class="texto-blanco pt-5 pb-3">Servicios</h1>
+    <h2 class="texto-blanco pt-5 pb-3">Servicios</h2>
 
     @if ($mensaje = Session::get('exito'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -1,7 +1,7 @@
 @extends('layouts.layout')
-
+@section('titulo', 'panel')
 @section('content')
 <div class="container">
-   <h3 class="texto-blanco">Hola soy admin</h3>
+    <h1>Bienvenido ADMIN<strong>a Mundo animal</strong></h1>
 </div>
 @endsection

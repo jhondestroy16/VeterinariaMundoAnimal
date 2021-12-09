@@ -3,7 +3,7 @@
 @section('titulo', 'Servicios')
 @section('content')
 
-    <h1 class="texto-blanco pt-5 pb-3">Datos del servicio</h1>
+    <h2 class="texto-blanco pt-5 pb-3">Datos del servicio</h2>
     <div class="card mt-4 mb-3">
         <div class="card-body shadow">
             <div class="row">

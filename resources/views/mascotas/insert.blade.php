@@ -2,7 +2,7 @@
 
 @section('titulo', 'Crear mascota')
 @section('content')
-    <h1 class="texto-blanco pt-5 pb-3">Registrar nueva mascota</h1>
+    <h2 class="texto-blanco pt-5 pb-3">Registrar nueva mascota</h2>
     @if ($errors->any())
 
         <div class="alert alert-danger">
