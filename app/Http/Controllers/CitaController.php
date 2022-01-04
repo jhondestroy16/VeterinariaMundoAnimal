@@ -87,6 +87,9 @@ class CitaController extends Controller
             $citaServicio->servicio_id = $servicio;
             $citaServicio->save();
         }
+        DB::table('citas')
+            ->where('id', $id)
+            ->update(['estado' => 'Aceptada']);
 
         DB::table('horarios')
             ->where('fecha', $fecha)
@@ -107,7 +110,9 @@ class CitaController extends Controller
         $total = 0;
         $totalValor = 0;
         foreach ($duraciones as $duracion) {
+            //Tiempo
             $total = ($duracion->turno  + $total);
+            //Dinero
             $totalValor += $duracion->valor;
         }
         $total += $turnoInicial;
@@ -116,6 +121,7 @@ class CitaController extends Controller
             ->where('turno', '=', $total)
             ->first();
         $horaFinal = $horaFin->hora;
+
         DB::table('citas')
             ->where('fechaCita', $fecha)
             ->where('horaCita', $hora)
@@ -148,7 +154,7 @@ class CitaController extends Controller
     {
         $mascota = Cita::join('mascotas', 'citas.mascotaId', '=', 'mascotas.id')
             ->join('users', 'mascotas.clienteId', '=', 'users.id')
-            ->select('mascotas.*', 'citas.id as idCita', 'citas.fechaCita', 'citas.horaCita', 'citas.horaCitaFin', 'citas.valorTotal', 'citas.descripcion', 'citas.mascotaId', 'users.*')
+            ->select('mascotas.*', 'citas.id as idCita', 'citas.fechaCita', 'citas.horaCita', 'citas.horaCitaFin', 'citas.valorTotal', 'citas.descripcion', 'citas.mascotaId', 'citas.estado', 'users.*')
             ->where('citas.id', '=', $id)
             ->first();
 
@@ -167,7 +173,6 @@ class CitaController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -177,9 +182,17 @@ class CitaController extends Controller
      * @param  \App\Models\Cita  $cita
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        DB::table('citas')
+            ->where('id', $id)
+            ->update(['estado' => 'Aceptada']);
+
+        DB::table('horarios')
+            ->where('cita_id', $id)
+            ->update(['disponibilidad' => 'no']);
+
+        return redirect()->route('citas.index')->with('exito', 'Se ha aprobado la cita');
     }
 
     /**
@@ -190,15 +203,13 @@ class CitaController extends Controller
      */
     public function destroy($id)
     {
-        $cita = Cita::FindOrFail($id);
+        DB::table('citas')
+            ->where('id', $id)
+            ->update(['estado' => 'Rechazada']);
 
-        $citaServicio = DB::table('cita_servicios')
-            ->select('cita_id')
-            ->where('cita_id', '=', $id);
-
-        $citaServicio->delete();
-        $cita->delete();
-
+        DB::table('horarios')
+            ->where('cita_id', $id)
+            ->update(['disponibilidad' => 'si']);
 
         return redirect()->route('citas.index')->with('exito', 'Se ha solicitado la cancelacion de la cita');
     }

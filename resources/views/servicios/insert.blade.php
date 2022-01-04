@@ -56,18 +56,6 @@
                         </div>
                     </div>
                 </div>
-                {{-- Revision --}}
-                {{-- <div class="col">
-                    <div class="mb-2">
-                        <div class="mb-2">
-                            <label for="duracion" class="form-label texto my-2">
-                                <h4 class="texto">Duracion del servicio</h4>
-                            </label>
-                            <input type="time" id="duracion" class="form-control" name="duracion">
-                        </div>
-                    </div>
-                </div> --}}
-                {{-- ************* --}}
                 <div class="col">
                     <div class="mb-2">
                         <div class="mb-2">

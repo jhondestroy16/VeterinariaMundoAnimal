@@ -16,7 +16,7 @@
                     <th>Fecha</th>
                     <th>Hora cita inicio</th>
                     <th>Hora cita fin</th>
-                    <th>Descripcion</th>
+                    <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -31,27 +31,34 @@
                             @endif
                         </td>
                         <td> {{ $cita->horaCitaFin }} @if ($cita->horaCitaFin < '12:00:00')
-                            AM
-                        @else
-                            PM
-                        @endif
-                    </td>
-                        <td> {{ $cita->descripcion }} </td>
+                                AM
+                            @else
+                                PM
+                            @endif
+                        </td>
+                        <td> {{ $cita->estado }} </td>
                         <td>
-                            <a href="{{ route('citas.show', $cita->id) }}" class="btn btn-info">Detalles</a>
-                            {{-- <a href="{{ route('citas.edit', $cita->id) }}" class="btn btn-warning">Editar</a> --}}
-                            <form action="{{ route('citas.destroy', $cita->id) }}" method="post" class="d-inline-flex">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('¿Desea cancelar la cita?')">Eliminar</button>
-                            </form>
+                            @can('citas')
+                                <a href="{{ route('citas.show', $cita->id) }}" class="btn btn-info">Detalles</a>
+                                <form action="{{ route('citas.destroy', $cita->id) }}" method="post" class="d-inline-flex">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('¿Desea cancelar la cita?')">Cancelar cita</button>
+                                </form>
+                                <form action="{{ route('citas.update', $cita->id) }}" method="post" class="d-inline-flex">
+                                    @csrf
+                                    @method('put')
+                                    <button type="submit" class="btn btn-primary"
+                                        onclick="return confirm('¿Desea confirmar la cita?')">Aceptar cita</button>
+                                </form>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @else
-    <p class="texto-blanco">No hay citas registradas</p>
+        <p class="texto-blanco">No hay citas registradas</p>
     @endif
 @endsection

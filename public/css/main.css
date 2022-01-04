@@ -115,3 +115,10 @@ body {
     text-align: center;
     font-weight: bold;
 }
+
+.color-verde{
+    color: green;
+}
+.color-rojo{
+    color: red;
+}
